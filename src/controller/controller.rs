@@ -49,7 +49,7 @@ impl Controller {
         let mut last_update = Instant::now();
 
         let action_interval = Duration::from_millis(1000);
-        let update_interval = Duration::from_millis(2000);
+        let update_interval = Duration::from_millis(5000);
         let repeat_timeout = Duration::from_millis(25);
         
         info!("Reading remote inputs..");

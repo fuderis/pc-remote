@@ -1,7 +1,13 @@
 use crate::prelude::*;
-use std::process::Command;
+use std::{
+    process::{ Command },
+    os::windows::process::CommandExt
+};
 use csv::Reader;
 
+const CREATE_NO_WINDOW: u32 = 0x08000000;
+
+/// The device name filter
 pub type DeviceFilter = fn(&str, &DeviceKind) -> bool;
 
 /// The device kind
@@ -158,6 +164,7 @@ impl Media {
     pub async fn get_all_devices(&self) -> Result<(Option<Device>, Vec<Device>)> {
         let output = Command::new(&self.svv_path)
             .arg("/scomma")
+            .creation_flags(CREATE_NO_WINDOW)
             .output()
             .map_err(|_| Error::FailedReadDevicesList)?;
         
@@ -227,6 +234,7 @@ impl Media {
                     .arg("/SetDefault")
                     .arg(name)
                     .arg("all")  // all = Console, Multimedia, Communications
+                    .creation_flags(CREATE_NO_WINDOW)
                     .status()?;
                 
                 if status.success() {
@@ -280,6 +288,7 @@ impl Media {
                     .arg("/SetDefault")
                     .arg(name)
                     .arg("all")  // all = Console, Multimedia, Communications
+                    .creation_flags(CREATE_NO_WINDOW)
                     .status()?;
                 
                 if status.success() {
@@ -332,6 +341,7 @@ impl Media {
         let status = Command::new(&self.svcl_path)
             .arg("/GetPercent")
             .arg(&device.name)
+            .creation_flags(CREATE_NO_WINDOW)
             .status()?;
 
         let code = status.code().unwrap_or(0);
@@ -348,6 +358,7 @@ impl Media {
         let status = Command::new(&self.nircmd_path)
             .arg("setsysvolume")  // Исправленная команда!
             .arg(sys_volume.to_string())
+            .creation_flags(CREATE_NO_WINDOW)
             .status()?;
         
         if status.success() {
@@ -378,6 +389,7 @@ impl Media {
         let status = Command::new(&self.svv_path)
             .arg("/Switch")
             .arg(&device.name)
+            .creation_flags(CREATE_NO_WINDOW)
             .status()?;
         
         if status.success() {
@@ -395,6 +407,7 @@ impl Media {
         let status = Command::new(&self.svv_path)
             .arg("/Switch")
             .arg(&device.name)
+            .creation_flags(CREATE_NO_WINDOW)
             .status()?;
         
         if status.success() {
@@ -412,6 +425,7 @@ impl Media {
         let status = Command::new(&self.svcl_path)
             .arg("/GetMute")
             .arg(&device.name)
+            .creation_flags(CREATE_NO_WINDOW)
             .status()?;
         
         // Exit code: 1 = muted, 0 = not muted
@@ -426,6 +440,7 @@ impl Media {
         let status = Command::new(&self.svcl_path)
             .arg("/GetMute")
             .arg(&device.name)
+            .creation_flags(CREATE_NO_WINDOW)
             .status()?;
         
         // Exit code: 1 = muted, 0 = not muted
