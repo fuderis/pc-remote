@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/assets/images/icons/icon.ico">
+    <link rel="stylesheet" href="/assets/styles/css/main.css">
+    <script type="module" src="/assets/scripts/js/main.js"></script>
+</head>
+<body>
+    <header id="header">
+        <div class="left">
+            <img id="logo" src="/assets/images/icons/icon.svg" alt="logo">
+            <h1 id="name">PC Remote</h1>
+        </div>
+        <input id="pressed-code" type="button" value="FFFFFF" readonly title="Copy pressed code">
+        <div class="right">
+            <div id="com-port">
+                <label for="com-port-value">Com Port:</label>
+                <input id="com-port-value" type="number" value="8">
+            </div>
+        </div>
+    </header>
+
+    <main id="main">
+        <div class="container">
+            <div class="binds">
+            </div>
+        </div>
+        <button class="bind add-bind">+ Add bind</button>
+    </main>
+</body>
+</html>

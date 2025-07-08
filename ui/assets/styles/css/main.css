@@ -1,0 +1,362 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  box-sizing: border-box;
+  border: 0;
+  outline: none;
+  appearance: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+header, main, aside, footer {
+  display: flex;
+  width: 100%;
+  height: auto;
+}
+
+header {
+  justify-content: space-between;
+  align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  border: 0;
+  cursor: pointer;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+button, input[type=button], input[type=submit] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+select, select2 {
+  display: flex;
+  user-select: none;
+  cursor: pointer;
+}
+select option, select option2, select2 option, select2 option2 {
+  display: flex;
+  width: 100%;
+  background: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+@font-face {
+  font-family: "Roboto Flex";
+  src: url("../../fonts/roboto-flex.ttf") format("truetype");
+}
+body {
+  color: #fff;
+  font-family: "Roboto Flex";
+  font-size: 14px;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+button {
+  width: 100px;
+  height: 30px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  background: #111117;
+  border-radius: 15px;
+  transition: transform 200ms ease;
+  transform-origin: center;
+}
+button:hover {
+  transform: scale(1.05);
+}
+button:active {
+  transform: translateY(2px);
+}
+button[disabled] {
+  pointer-events: none;
+  opacity: 0.7;
+  cursor: default;
+}
+
+input {
+  width: 200px;
+  height: 30px;
+  padding: 0 10px;
+  color: #000;
+  background: #00BBFF;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  transition: border 200ms ease;
+}
+input:hover, input:focus {
+  border: 1px solid #00BBFF;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: space-between;
+  width: 100%;
+  height: auto;
+}
+
+select2 {
+  width: 200px;
+  height: 30px;
+  position: relative;
+}
+select2 container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #000;
+  font-weight: 500;
+  background: #101016;
+  border: 1px solid #36363B;
+  border-radius: 15px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+select2 container:hover, select2 container:focus {
+  z-index: 99;
+  height: 200px;
+  overflow-y: auto;
+}
+select2 container:hover label, select2 container:focus label {
+  display: flex;
+}
+select2 option2 {
+  width: 100%;
+  height: auto;
+}
+select2 option2 label {
+  display: none;
+  justify-content: flex-start;
+  width: 100%;
+  height: 30px;
+  padding: 0 7px;
+  color: #fff;
+  background: #101016;
+  border: 1px solid transparent;
+  border-bottom: 1px solid #36363B;
+  transition: filter 200ms ease;
+}
+select2 option2 label:hover {
+  filter: brightness(1.4);
+}
+select2 option2:nth-child(0) label {
+  border-radius: 15px 15px 0 0;
+}
+select2 option2:nth-last-child label {
+  border-radius: 0 0 15px 15px;
+  border-bottom: 0;
+}
+select2 input:checked ~ label {
+  display: flex;
+  pointer-events: none;
+  color: #000;
+  background: #00BBFF;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #00BBFF;
+  border-radius: 2.5px;
+  border: 1px solid transparent;
+}
+
+body {
+  color: #fff;
+  background-color: #111117;
+  background-image: url("/assets/images/bg.png");
+  background-size: cover;
+  background-repeat: none;
+}
+
+header#header {
+  padding: 10px 50px;
+}
+header#header > div {
+  display: flex;
+  align-items: center;
+}
+header#header #logo {
+  width: 47px;
+  height: 47px;
+  margin-left: -11px;
+}
+header#header #pressed-code {
+  text-align: center;
+  width: 80px;
+  border-radius: 15px;
+  background: #F6FF00;
+}
+header#header #com-port {
+  display: flex;
+  width: auto;
+  height: 30px;
+}
+header#header #com-port label {
+  height: 100%;
+  padding-left: 12px;
+  padding-right: 7px;
+  border: 1px solid #36363B;
+  background: #111117;
+  border-radius: 15px 0 0 15px;
+}
+header#header #com-port input {
+  width: 35px;
+  padding: 0 7px;
+  border-radius: 0 15px 15px 0;
+}
+
+main#main {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 50px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+main#main .binds {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+}
+main#main .bind {
+  display: flex;
+  width: 100%;
+  height: 55px;
+  margin-top: 5px;
+  background: #101016;
+  border: 1px solid #36363B;
+  border-radius: 25px;
+}
+main#main .bind .options {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding-left: 30px;
+  padding-right: 20px;
+}
+main#main .bind .option {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+main#main .bind .option[disabled] {
+  pointer-events: none;
+  opacity: 0.7;
+}
+main#main .bind .option label.title {
+  color: #fff;
+  font-weight: 600;
+  margin-right: 10px;
+}
+main#main .bind .option label.title.checkbox {
+  margin: 0;
+}
+main#main .bind .option.code input {
+  width: 80px;
+}
+main#main .bind .option.action select2 {
+  width: 200px;
+}
+main#main .bind .option.value input {
+  width: 200px;
+}
+main#main .bind .option.checkbox label.checkbox {
+  display: block;
+  position: relative;
+  width: 30px;
+  height: 16px;
+  background: #2A2A35;
+  border: 1px solid #36363B;
+  border-radius: 9px;
+}
+main#main .bind .option.checkbox label.checkbox::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  background: #00BBFF;
+  border-radius: 50%;
+  box-shadow: 0px 0px 10px 0px rgba(0, 187, 255, 0.15);
+}
+main#main .bind .option.checkbox input:checked ~ label.checkbox::before {
+  left: auto;
+  right: 0;
+}
+main#main .bind button.remove {
+  position: relative;
+  width: 10px;
+  height: 10px;
+}
+main#main .bind button.remove img {
+  width: 100%;
+}
+main#main .bind button.remove::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 20px;
+  height: 20px;
+}
+main#main button.add-bind {
+  justify-content: center;
+  align-items: center;
+}
