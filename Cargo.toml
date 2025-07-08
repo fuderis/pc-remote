@@ -15,6 +15,7 @@ grass = "0.13.4"
 macron = { version = "0.1.7", features = ["derive", "path", "string", "collections"] }
 tauri = { version = "2.0.3", features = ["config-toml", "tray-icon", "image-ico"] }
 tauri-plugin-prevent-default = "2.1.1"
+tauri-plugin-autostart = "2.5.0"
 tokio = { version = "1.45.1", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

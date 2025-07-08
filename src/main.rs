@@ -68,11 +68,6 @@ async fn main() -> Result<()> {
     // init & start pc remote controller:
     Controller::new().await?
         .listen().await?;
-
-    // allowing shortcuts:
-    let prevent = tauri_plugin_prevent_default::Builder::new()
-        .with_flags(tauri_plugin_prevent_default::Flags::empty())
-        .build();
     
     // run ui:
     tauri::Builder::default()
@@ -126,7 +121,14 @@ async fn main() -> Result<()> {
             
             Ok(())
         })
-        .plugin(prevent)
+        .plugin(tauri_plugin_prevent_default::Builder::new()
+            .with_flags(tauri_plugin_prevent_default::Flags::empty())
+            .build()
+        )
+        .plugin(tauri_plugin_autostart::init(
+            tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+            None
+        ))
         .run(tauri::generate_context!())?;
 
     Ok(())

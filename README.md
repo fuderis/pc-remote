@@ -1,11 +1,12 @@
 # PC Remote
 
-![AppIcon](readme/icon.png)
+![AppIcon](readme/preview.png)
 
 PC Remote is a computer remote control system based on an Arduino Nano microcontroller and a TSOP4838 IR receiver. The Arduino board reads signals from a standard IR remote control. A Rust-based application on your PC receives these signals via the board's COM port and executes user-defined actions.
 
 The application provides a graphical interface for managing button bindings, assigning actions, and configuring behavior. You must also specify the COM port number for the Arduino board within the application.
 
+> **Download for Windows**: [Release v0.1.0](https://github.com/fuderis/pc-remote/tree/main/pc-remote.zip)
 
 ## Features:
 
