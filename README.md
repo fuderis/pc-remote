@@ -34,10 +34,11 @@ Connect the TSOP4838 IR receiver to your Arduino Nano as follows:
 ### 2. Flashing the Arduino Nano
 
 1. Download and install the [Arduino IDE](https://www.arduino.cc/en/software/).
-2. Open the sketch from [/sketch in my repository](https://github.com/fuderis/pc-remote/tree/main/sketch).
-3. Connect your Arduino Nano to your PC via USB.
-4. Select the correct board and COM port in the Arduino IDE.
-5. Upload the sketch to your Arduino Nano.
+2. Install the library '**IRremote**' (__*2.6.0* - *2.8.0*__).
+3. Open the sketch from [/sketch in my repository](https://github.com/fuderis/pc-remote/tree/main/sketch).
+4. Connect your Arduino Nano to your PC via USB.
+5. Select the correct board and COM port in the Arduino IDE.
+6. Upload the sketch to your Arduino Nano.
 
 ### 3. Downloading the PC Remote Software
 
