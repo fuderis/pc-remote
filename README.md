@@ -8,6 +8,7 @@ The application provides a graphical interface for managing button bindings, ass
 
 > **Download for Windows**: [Release v0.1.0](https://github.com/fuderis/pc-remote/raw/main/pc-remote.zip)
 
+
 ## Features:
 
 * **Control your PC** with any IR remote
@@ -50,12 +51,12 @@ Connect the TSOP4838 IR receiver to your Arduino Nano as follows:
 
 Use the graphical interface to add or edit button bindings:
 
-1. Press the 'Add bind' button to create new IR Remote bind.
-2. Press a button on your IR remote to show its code. Copy is and paste to 'Code' field.
+1. Press a button on your IR remote to register its code.
+2. Press the '*Add bind*' button to create new bind with the previously pressed code.
 3. Assign an action from the available list.
 4. If the 'Value' field is available, then fill it in:
-    * *KeyboardPress*: write key names
-    * *BrowserOpen*: write website URL-link
+    * *KeyboardPress*: write names of the keys separated by commas
+    * *BrowserOpen*: write website URL-address
 5. You can enable button press repeating if you need.
 
 ![Screenshot](readme/screenshot.png)

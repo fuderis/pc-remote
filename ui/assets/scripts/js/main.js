@@ -41,7 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add a new bind:
     document.querySelector("#main button.add-bind").addEventListener("click", () => {
-        invoke("add_bind", {})
+        let code = document.querySelector("#pressed-code").value;
+        
+        invoke("add_bind", { code })
             .then(bind => {
                 let binds_container = document.querySelector("#main .binds");
                 binds_container.insertAdjacentHTML("beforeend", bind)

@@ -17,8 +17,9 @@ async fn get_binds() -> StdResult<Vec<String>, String> {
 
 /// Add a new bind
 #[tauri::command]
-async fn add_bind() -> StdResult<String, String> {    
-    let bind = Bind::default();
+async fn add_bind(code: String) -> StdResult<String, String> {    
+    let mut bind = Bind::default();
+    bind.code = code;
 
     // generate bind html:
     let bind_html = elementor::generate_bind(&bind.id, &bind).map_err(|e| e.to_string())?;
@@ -118,6 +119,9 @@ async fn main() -> Result<()> {
                     _ => {}
                 }
             });
+
+            // hide window on first start:
+            window.hide().unwrap();
             
             Ok(())
         })
