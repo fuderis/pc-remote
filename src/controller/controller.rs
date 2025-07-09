@@ -349,7 +349,7 @@ impl Controller {
             }
 
             Action::BrowserZoomIn => {
-                self.press_shortcut(&[Key::Ctrl, Key::Plus]).await?;
+                self.press_shortcut(&[Key::Ctrl, Key::Equal]).await?;
                 info!("Zoom in a browser page");
             }
 
