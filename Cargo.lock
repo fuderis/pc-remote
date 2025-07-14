@@ -171,29 +171,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 
 [[package]]
-name = "avr-pc-remote"
-version = "0.0.0"
-dependencies = [
- "chrono",
- "csv",
- "enigo",
- "grass",
- "log",
- "macron",
- "once_cell",
- "rand 0.8.5",
- "serde",
- "serde_json",
- "serialport",
- "tauri",
- "tauri-build",
- "tauri-plugin-autostart",
- "tauri-plugin-prevent-default",
- "tokio",
- "webbrowser",
-]
-
-[[package]]
 name = "backtrace"
 version = "0.3.75"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2624,6 +2601,29 @@ dependencies = [
  "redox_syscall",
  "smallvec",
  "windows-targets 0.52.6",
+]
+
+[[package]]
+name = "pc-remote"
+version = "0.0.0"
+dependencies = [
+ "chrono",
+ "csv",
+ "enigo",
+ "grass",
+ "log",
+ "macron",
+ "once_cell",
+ "rand 0.8.5",
+ "serde",
+ "serde_json",
+ "serialport",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-autostart",
+ "tauri-plugin-prevent-default",
+ "tokio",
+ "webbrowser",
 ]
 
 [[package]]

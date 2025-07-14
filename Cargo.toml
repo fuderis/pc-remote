@@ -1,5 +1,5 @@
 [package]
-name = "avr-pc-remote"
+name = "pc-remote"
 edition = "2024"
 build = "src/build.rs"
 

@@ -9,7 +9,7 @@ pub mod emulator;    pub use emulator::{ Emulator, Keyboard, Key, Mouse, Media, 
 pub mod controller;  pub use controller::Controller;
 pub mod elementor;
 
-pub static LOGGER: Lazy<Logger> = Lazy::new(|| Logger::new());
+pub static LOGGER: Lazy<Logger> = Lazy::new(|| Logger::new("/logs", 20));
 pub static CONFIG: Lazy<Arc<Mutex<Config>>> = Lazy::new(|| Config::new("/config.json").unwrap_or_default());
 
 pub static APP_HANDLE: Lazy<Arc<StdMutex<Option<tauri::AppHandle>>>> = Lazy::new(|| Arc::new(StdMutex::new(None)));
