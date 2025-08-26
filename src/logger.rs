@@ -1,12 +1,14 @@
 use crate::prelude::*;
 use std::fs;
+use std::fs::File;
+use std::io::Write;
 use chrono::Local;
 
-/// The program logger
+/// Application logger
 pub struct Logger {
-    pub logs: StdMutex<Vec<String>>,
-    pub logs_dir: PathBuf,
-    pub files_limit: usize,
+    pub file: StdMutex<Option<File>>,
+    pub dir: PathBuf,
+    pub limit: usize,
 }
 
 impl log::Log for Logger {
@@ -17,12 +19,17 @@ impl log::Log for Logger {
     fn log(&self, record: &log::Record) {
         if self.enabled(record.metadata()) {
             let dt = Local::now().format("%Y-%m-%dT%H:%M:%S%.6f");
-            let log = fmt!("[{dt}] [{}] {}", record.level(), record.args());
+            let mut log = fmt!("[{dt}] [{}] {}", record.level(), record.args());
 
             // printing to terminal:
             println!("{log}");
 
-            self.logs.lock().unwrap().push(log);
+            if let Some(file) = self.file.lock().unwrap().as_mut() {
+                log.push('\n');
+                
+                let _ = file.write_all(log.as_bytes());
+                let _ = file.flush();
+            }
         }
     }
 
@@ -30,6 +37,23 @@ impl log::Log for Logger {
 }
 
 impl Logger {
+    /// Creates a new logger
+    pub fn new<P: AsRef<Path>>(dir: P, limit: usize) -> Self {
+        let dir = dir.as_ref().to_path_buf();
+        fs::create_dir_all(&dir).expect("Failed to create a logs directory.");
+        let path = dir.join( Local::now().format("%Y-%m-%d_%H-%M-%S.log").to_string() );
+
+        let this = Self {
+            file: StdMutex::new(if limit > 0 { Some( File::create(path).map_err(|e| err!("Failed to create log file: {e}")).unwrap() ) }else{ None }),
+            dir,
+            limit,
+        };
+
+        this.clear().map_err(|e| err!("Failed to remove extra logs: {e}")).unwrap();
+
+        this
+    }
+
     /// Initializes a logger
     pub fn init(&'static self) -> Result<()> {
         log::set_logger(self).map_err(Error::from)?;
@@ -37,46 +61,14 @@ impl Logger {
 
         Ok(())
     }
-    
-    /// Creates a new logger
-    pub fn new<P: AsRef<Path>>(logs_dir: P, files_limit: usize) -> Self {
-        Self {
-            logs: StdMutex::new(vec![]),
-            logs_dir: path!(logs_dir.as_ref()),
-            files_limit,
-        }
-    }
-
-    /// Collects logs and clears them
-    pub fn take(&self) -> Vec<String> {
-        let mut logs_lock = self.logs.lock().unwrap();
-
-        std::mem::take(&mut *logs_lock)
-    }
-
-    /// Saves logs to file
-    pub fn save(&self) -> Result<()> {
-        let path = self.logs_dir.join( Local::now().format("%Y-%m-%d_%H-%M-%S.log").to_string() );
-
-        // create file dir:
-        let dir = path.parent().unwrap();
-        if !dir.exists() {
-            fs::create_dir_all(dir)?;
-        }
-
-        // removing old log files:
-        self.cleanup()?;
-        
-        // writing logs to file:
-        let logs_str = self.logs.lock().unwrap().join("\n");
-        fs::write(&path, logs_str)?;
-
-        Ok(())
-    }
 
     /// Removes an extra old log files
-    fn cleanup(&self) -> Result<()> {
-        let mut log_files: Vec<PathBuf> = fs::read_dir(&self.logs_dir)?
+    fn clear(&self) -> Result<()> {
+        if self.limit == 0 { return Ok(()) }
+
+        let (dir, limit) = (&self.dir, self.limit);
+        
+        let mut log_files: Vec<PathBuf> = fs::read_dir(&dir)?
             .filter_map(|entry| {
                 let entry = entry.ok()?;
                 let path = entry.path();
@@ -92,8 +84,8 @@ impl Logger {
         log_files.sort_by_key(|path| fs::metadata(path).and_then(|m| m.created()).ok());
 
         // remove extra files:
-        if log_files.len() > self.files_limit {
-            for old_file in &log_files[0..log_files.len() - self.files_limit] {
+        if log_files.len() > limit {
+            for old_file in &log_files[0..log_files.len() - limit] {
                 let _ = fs::remove_file(old_file);
             }
         }

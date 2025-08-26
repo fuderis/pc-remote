@@ -97,9 +97,6 @@ async fn main() -> Result<()> {
                     tauri::WindowEvent::CloseRequested { api, .. } => {
                         api.prevent_close();
                         
-                        // saving logs:
-                        LOGGER.save().unwrap();
-
                         // removing tray:
                         if let Some(tray) = SYSTEM_TRAY.lock().unwrap().take() {
                             tray.remove();

@@ -1,5 +1,5 @@
 productName = "PC Remote"
-version = "0.1.0"
+version = "0.1.1"
 identifier = "com.fuderis.pc-remote"
 
 [build]
@@ -15,6 +15,7 @@ width = 1000
 height = 650
 resizable = true
 fullscreen = false
+visible = false
 
 [app.security]
 csp = ""

@@ -2008,9 +2008,9 @@ dependencies = [
 
 [[package]]
 name = "macron"
-version = "0.1.7"
+version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "67c4e606530286ca90961c84454e077c5217d6a0f902df7800ef2d30546fbec8"
+checksum = "869ebf5d2e1f24702df6c5ffc8492afc5085d92a82fd59b7bbda8da034fe6c3a"
 dependencies = [
  "macron-collections",
  "macron-impl-display",
@@ -2087,9 +2087,9 @@ dependencies = [
 
 [[package]]
 name = "macron-path"
-version = "0.1.0"
+version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2e39698e96be6c14427cbbc115d6f1fa775c6b789f3dfdd9f1ff239906d0fe41"
+checksum = "20bea4b229c0feb831c4cef7bd2f4a56241ed4602e8cad0fead0fee036da36a9"
 dependencies = [
  "proc-macro2",
  "quote",

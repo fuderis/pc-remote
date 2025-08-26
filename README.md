@@ -6,7 +6,7 @@ PC Remote is a computer remote control system based on an Arduino Nano microcont
 
 The application provides a graphical interface for managing button bindings, assigning actions, and configuring behavior. You must also specify the COM port number for the Arduino board within the application.
 
-> **Download for Windows**: [Release v0.1.0](https://github.com/fuderis/pc-remote/raw/main/PCRemote.zip)
+> **Download for Windows**: [Release v0.1.1](https://github.com/fuderis/pc-remote/raw/main/pc-remote-win64.zip)
 
 
 ## Features:
@@ -42,9 +42,12 @@ Connect the TSOP4838 IR receiver to your Arduino Nano as follows:
 
 ### 3. Downloading the PC Remote Software
 
-1. Download the latest release of the [PC Remote](https://github.com/fuderis/pc-remote/raw/main/PCRemote.zip) application.
+1. Download the latest release of the [PC Remote](https://github.com/fuderis/pc-remote/raw/main/pc-remote-win64.zip) application.
 2. Unzip the archive to a convenient location on your PC and install it.
 3. Run the executable file to start the interface.
+4. **How to add the program to startup?**:
+    * **Open Task Scheduler**: press shortcut `Win + R`, type `taskschd.msc`, and press `Enter`.
+    * **Create a new task**: set it to run at logon with highest privileges, and specify the program’s executable as the action. Save the task.
 
 ### 4. Configuring Bindings and Actions
 
