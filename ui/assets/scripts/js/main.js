@@ -11,7 +11,17 @@ events.listen('pressed-code', ({ payload }) => {
     pressed_code.value = code;
 });
 
-// Update binds list
+// Updates com port
+function update_port() {
+    invoke("get_port", {})
+        .then(port => {
+            let com_port = document.querySelector("#com-port-value");
+            com_port.value = port;
+        })
+        .catch(e => console.error(e))
+}
+
+// Updates binds list
 function update_binds() {
     invoke("get_binds", {})
         .then(binds => {
@@ -27,8 +37,21 @@ function update_binds() {
 const form_timers = new Map();
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Get binds list:
+    // Updating info:
+    update_port();
     update_binds();
+
+    // Changing com port handler:
+    document.querySelector("#com-port-value").addEventListener("input", (e) => {
+        let port = e.target.value;
+        
+        if (port === "") { return; }
+        else { port = +port; }
+        
+        invoke("set_port", { port })
+            .then(() => {})
+            .catch(e => console.error(e))
+    });
 
     // Pressed button handler:
     document.querySelector("#header #pressed-code").addEventListener("click", (e) => {

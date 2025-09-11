@@ -2,6 +2,23 @@
 use app::{ prelude::*, Controller, Bind, elementor };
 use tauri::Manager;
 
+/// Get com port from config
+#[tauri::command]
+async fn get_port() -> StdResult<u32, String> {    
+    Ok(CONFIG.lock().await.com_port)
+}
+
+/// Set com port
+#[tauri::command]
+async fn set_port(port: u32) -> StdResult<(), String> { 
+    let mut cfg = CONFIG.lock().await;
+
+    cfg.com_port = port;
+    cfg.save().map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
 /// Get binds list from config
 #[tauri::command]
 async fn get_binds() -> StdResult<Vec<String>, String> {    
@@ -73,6 +90,8 @@ async fn main() -> Result<()> {
     // run ui:
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
+            get_port,
+            set_port,
             get_binds,
             add_bind,
             update_bind,

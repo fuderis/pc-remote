@@ -20,19 +20,26 @@ impl Controller {
 
     /// Runs COM port listenning
     pub async fn listen(self) -> Result<()> {
-        let config = CONFIG.lock().await.clone();
-        
-        // init COM port:
-        let com_port = serialport::new(&fmt!("COM{}", config.com_port), config.baud_rate)
-            .timeout(Duration::from_millis(10))
-            .open()
-            .map_err(|e| { err!("Failed to get COM port: {e}"); e })
-            .unwrap();
-        
         // spawn handler:
         tokio::spawn(async move {
-            if let Err(e) = self.listen_handler(com_port).await {
-                err!("PC Controller panicked with error: {e}");
+            loop {
+                let Config { com_port, baud_rate, .. } = CONFIG.lock().await.clone();
+        
+                // init COM port:
+                let port = serialport::new(&fmt!("COM{}", com_port), baud_rate)
+                    .timeout(Duration::from_millis(10))
+                    .open()
+                    .map_err(|e| { err!("Failed to get COM port: {e}"); e });
+
+                if let Ok(port) = port {
+                    if let Err(e) = self.listen_handler(port).await {
+                        err!("PC Controller panicked with error: {e}");
+                    } else {
+                        break;
+                    }
+                } else {
+                    sleep(Duration::from_millis(200)).await;
+                }
             }
         });
 
@@ -40,7 +47,7 @@ impl Controller {
     }
 
     /// COM Port listenning handler
-    async fn listen_handler(self, com_port: Box<dyn serialport::SerialPort>) -> Result<()> {
+    async fn listen_handler(&self, com_port: Box<dyn serialport::SerialPort>) -> Result<()> {
         let mut com_reader = BufReader::new(com_port);
         let mut line = String::new();
 
@@ -124,7 +131,7 @@ impl Controller {
 
     const MOVE_MOUSE_STEP: [i32; 2] = [30, 70];
     const SCROLL_PAGE_STEP: [i32; 2] = [2, 5];
-    const CHANGE_VOLUME_STEP: [i32; 2] = [2, 5];
+    const CHANGE_VOLUME_STEP: [i32; 2] = [1, 2];
 
     /// Handle remote bind
     async fn handle_bind(&self, bind: &Bind, is_repeated: bool) -> Result<()> {
@@ -196,7 +203,7 @@ impl Controller {
                 /* self.press_shortcut(&[Key::VolumeUp]).await?;
                 info!("Increasing sound volume.."); */
                 
-                let step: i32 = Self::CHANGE_VOLUME_STEP[if is_repeated {1}else{0}];
+                let step: i32 = Self::CHANGE_VOLUME_STEP[1];
                 let media = &mut self.emulator.lock().await.media;
                 let volume = media.increase_audio_volume(step).await?;
 
@@ -210,7 +217,7 @@ impl Controller {
                 /* self.press_shortcut(&[Key::VolumeDown]).await?;
                 info!("Decreasing sound volume.."); */
                 
-                let step: i32 = Self::CHANGE_VOLUME_STEP[if is_repeated {1}else{0}];
+                let step: i32 = Self::CHANGE_VOLUME_STEP[0];
                 let media = &mut self.emulator.lock().await.media;
                 let volume = media.decrease_audio_volume(step).await?;
 
