@@ -61,6 +61,7 @@ void loop() {
     unsigned long code = results.value;
 
     // send to com port:
+    Serial.print("0x");
     Serial.println(code, HEX);
 
     // turn on/off light:

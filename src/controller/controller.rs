@@ -79,11 +79,16 @@ impl Controller {
             match com_reader.read_line(&mut line) {
                 Ok(0) => continue,
                 Ok(_) => {
-                    let code = line.trim().to_uppercase();
-                    if code.is_empty() { continue }
+                    let code = line.trim().to_owned();
 
+                    // validate remote code:
+                    if code.is_empty(){ continue }
+                    else if !code.starts_with("0x") {
+                        return Err(Error::InvalidRemoteCode.into());
+                    }
+                    
                     // repeat last bind:
-                    if code == "FFFFFFFF" {
+                    else if code == "0xFFFFFFFF" {
                         if last_action.elapsed() < repeat_timeout { continue; }
                         if last_code.is_empty() { continue }
 
@@ -119,23 +124,24 @@ impl Controller {
     }
 
     /// Execute remote bind
-    async fn execute_bind(&self, code: &str, is_repeated: bool) -> Result<()> {
+    async fn execute_bind(&self, code: &str, is_repeating: bool) -> Result<()> {
         for (_id, bind) in &CONFIG.lock().await.binds {
             if code == bind.code {
-                self.handle_bind(&bind, is_repeated).await?;
+                self.handle_bind(&bind, is_repeating).await?;
             }
         }
         
         Ok(())
     }
 
-    const MOVE_MOUSE_STEP: [i32; 2] = [30, 70];
-    const SCROLL_PAGE_STEP: [i32; 2] = [2, 5];
-    const CHANGE_VOLUME_STEP: [i32; 2] = [1, 2];
+    const MOVE_MOUSE_STEP: [i32; 2]          = [30, 70];
+    const SCROLL_PAGE_STEP: [i32; 2]         = [2, 5];
+    const CHANGE_VOLUME_UP_STEP: [i32; 2]    = [2, 5];
+    const CHANGE_VOLUME_DOWN_STEP: [i32; 2]  = [1, 3];
 
     /// Handle remote bind
-    async fn handle_bind(&self, bind: &Bind, is_repeated: bool) -> Result<()> {
-        if is_repeated && !bind.repeat { return Ok(()) }
+    async fn handle_bind(&self, bind: &Bind, is_repeating: bool) -> Result<()> {
+        if is_repeating && !bind.repeat { return Ok(()) }
         
         match &bind.action {
             //               M E D I A:
@@ -203,7 +209,7 @@ impl Controller {
                 /* self.press_shortcut(&[Key::VolumeUp]).await?;
                 info!("Increasing sound volume.."); */
                 
-                let step: i32 = Self::CHANGE_VOLUME_STEP[1];
+                let step: i32 = Self::CHANGE_VOLUME_UP_STEP[is_repeating as usize];
                 let media = &mut self.emulator.lock().await.media;
                 let volume = media.increase_audio_volume(step).await?;
 
@@ -217,7 +223,7 @@ impl Controller {
                 /* self.press_shortcut(&[Key::VolumeDown]).await?;
                 info!("Decreasing sound volume.."); */
                 
-                let step: i32 = Self::CHANGE_VOLUME_STEP[0];
+                let step: i32 = Self::CHANGE_VOLUME_DOWN_STEP[is_repeating as usize];
                 let media = &mut self.emulator.lock().await.media;
                 let volume = media.decrease_audio_volume(step).await?;
 
@@ -244,7 +250,7 @@ impl Controller {
             Action::MouseLeft => {
                 if !*self.mouse_mode_on.lock().await { return Ok(()) }
                 
-                let step: i32 = Self::MOVE_MOUSE_STEP[if is_repeated {1}else{0}];
+                let step: i32 = Self::MOVE_MOUSE_STEP[is_repeating as usize];
                 let mouse = &self.emulator.lock().await.mouse;
                 mouse.move_x(-step).await?;
 
@@ -254,7 +260,7 @@ impl Controller {
             Action::MouseRight => {
                 if !*self.mouse_mode_on.lock().await { return Ok(()) }
                 
-                let step: i32 = Self::MOVE_MOUSE_STEP[if is_repeated {1}else{0}];
+                let step: i32 = Self::MOVE_MOUSE_STEP[is_repeating as usize];
                 let mouse = &self.emulator.lock().await.mouse;
                 mouse.move_x(step).await?;
 
@@ -264,7 +270,7 @@ impl Controller {
             Action::MouseUp => {
                 if !*self.mouse_mode_on.lock().await { return Ok(()) }
                 
-                let step: i32 = Self::MOVE_MOUSE_STEP[if is_repeated {1}else{0}];
+                let step: i32 = Self::MOVE_MOUSE_STEP[is_repeating as usize];
                 let mouse = &self.emulator.lock().await.mouse;
                 mouse.move_y(-step).await?;
 
@@ -274,7 +280,7 @@ impl Controller {
             Action::MouseDown => {
                 if !*self.mouse_mode_on.lock().await { return Ok(()) }
                 
-                let step: i32 = Self::MOVE_MOUSE_STEP[if is_repeated {1}else{0}];
+                let step: i32 = Self::MOVE_MOUSE_STEP[is_repeating as usize];
                 let mouse = &self.emulator.lock().await.mouse;
                 mouse.move_y(step).await?;
 
@@ -293,7 +299,7 @@ impl Controller {
             Action::MouseScrollUp => {
                 if !*self.mouse_mode_on.lock().await { return Ok(()) }
                 
-                let step: i32 = Self::SCROLL_PAGE_STEP[if is_repeated {1}else{0}];
+                let step: i32 = Self::SCROLL_PAGE_STEP[is_repeating as usize];
                 let mouse = &self.emulator.lock().await.mouse;
                 mouse.scroll_y(-step).await?;
 
@@ -303,7 +309,7 @@ impl Controller {
             Action::MouseScrollDown => {
                 if !*self.mouse_mode_on.lock().await { return Ok(()) }
                 
-                let step: i32 = Self::SCROLL_PAGE_STEP[if is_repeated {1}else{0}];
+                let step: i32 = Self::SCROLL_PAGE_STEP[is_repeating as usize];
                 let mouse = &self.emulator.lock().await.mouse;
                 mouse.scroll_y(step).await?;
 

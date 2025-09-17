@@ -14,6 +14,9 @@ pub enum Error {
     #[from]
     Logger(log::SetLoggerError),
 
+    #[display = "Invalid remote code format: it should starts with '0x..'"]
+    InvalidRemoteCode,
+
     #[display = "No audio devices set"]
     FoundNoDevices,
 

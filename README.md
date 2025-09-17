@@ -6,7 +6,7 @@ PC Remote is a computer remote control system based on an Arduino Nano microcont
 
 The application provides a graphical interface for managing button bindings, assigning actions, and configuring behavior. You must also specify the COM port number for the Arduino board within the application.
 
-> **Download for Windows**: [Release v0.1.2](https://github.com/fuderis/pc-remote/raw/main/pc-remote-win64.zip)
+> **Download for Windows**: [Release v0.1.3](https://github.com/fuderis/pc-remote/raw/main/pc-remote-win64.zip)
 
 
 ## Features:
